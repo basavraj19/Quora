@@ -17,4 +17,6 @@ public class StringUtils {
 	public static String userDeletedMessage = "User Deleted Successfully";
 	
 	public static String passwordUpdatedMessage = "Password Updated Successfully";
+	
+	public static String inValidPasswordMessage = "Invalid Password";
 }

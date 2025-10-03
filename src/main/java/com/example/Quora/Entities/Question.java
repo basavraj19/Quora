@@ -1,7 +1,11 @@
 package com.example.Quora.Entities;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,16 +19,12 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Quora_User_Dtl")
-public class User extends BaseModel {
-
-	@Column(nullable = false, unique = true)
-	private String userName;
-
-	private String firstName;
-
-	private String lastName;
+@Table(name = "Quora_Question_Dtl")
+public class Question extends BaseModel {
 
 	@Column(nullable = false)
-	private String password;
+	private String question;
+
+	@OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+	private List<Answer> answers;
 }

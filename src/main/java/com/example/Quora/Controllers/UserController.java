@@ -2,7 +2,6 @@ package com.example.Quora.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,13 +37,36 @@ public class UserController {
 			response.setMessage(StringUtils.userCreatedMessage);
 			response.setResult(newUser);
 			response.setException(null);
-			response.setStatusCode(HttpStatusCode.valueOf(200));
+			response.setStatusCode(HttpStatus.CREATED);
 		} else {
 			response.setStatus(StringUtils.failed);
 			response.setMessage(StringUtils.failedUserCreatedMessage);
 			response.setResult(null);
 			response.setException(new Exception("Internal Server Error"));
 			response.setStatusCode(HttpStatus.CREATED);
+		}
+
+		return response;
+	}
+
+	@PostMapping("/login")
+	public JsonResponseEntity<UserDto> login(@RequestBody final User user) throws UserNotFoundException {
+		final UserDto exsistingUser = userService.login(user);
+
+		final JsonResponseEntity<UserDto> response = new JsonResponseEntity<>();
+
+		if (CommonUtils.isValidObject(exsistingUser)) {
+			response.setStatus(StringUtils.success);
+			response.setMessage(StringUtils.userFetchedMessage);
+			response.setResult(exsistingUser);
+			response.setException(null);
+			response.setStatusCode(HttpStatus.ACCEPTED);
+		} else {
+			response.setStatus(StringUtils.failed); 
+			response.setMessage(StringUtils.inValidPasswordMessage);
+			response.setResult(null);
+			response.setException(null);
+			response.setStatusCode(HttpStatus.BAD_REQUEST);
 		}
 
 		return response;

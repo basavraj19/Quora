@@ -1,6 +1,7 @@
 package com.example.Quora.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.Quora.DTO.UserDto;
@@ -18,14 +19,36 @@ public class UserService {
 	@Autowired
 	private UserDto userDto;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public UserDto createNewUser(final User user) throws Exception {
 
 		if (CommonUtils.isValidObject(user)) {
+			final String encodedPassword = encryptPassword(user.getPassword());
+			user.setPassword(encodedPassword);
 			final User newUser = userRepository.save(user);
 			final UserDto dto = userDto.convertToUserDto(newUser);
 			return dto;
 		}
 
+		return null;
+	}
+	
+	public UserDto login(final User user) throws UserNotFoundException {
+		final User existingUser = userRepository.findByUserName(user.getUserName()).orElseThrow(
+				() -> new UserNotFoundException("user "+user.getUserName()+" not found."));
+		
+		if(CommonUtils.isValidObject(existingUser)) {
+			boolean isvalidUser = passwordEncoder.matches(user.getPassword(), existingUser.getPassword());
+			
+			if(isvalidUser) {
+				final UserDto dto = userDto.convertToUserDto(existingUser);
+
+				return dto;
+			}
+		}
+		
 		return null;
 	}
 
@@ -61,7 +84,8 @@ public class UserService {
 				.orElseThrow(() -> new UserNotFoundException("User not found."));
 
 		if (CommonUtils.isValidObject(user)) {
-			user.setPassword(password);
+			final String encodedPassword = encryptPassword(user.getPassword());
+			user.setPassword(encodedPassword);
 			userRepository.save(user);
 			final UserDto dto = userDto.convertToUserDto(user);
 
@@ -71,4 +95,7 @@ public class UserService {
 		return null;
 	}
 
+	public String encryptPassword(final String password) {
+		return passwordEncoder.encode(password);
+	}
 }
