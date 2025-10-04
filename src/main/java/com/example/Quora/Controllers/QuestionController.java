@@ -50,7 +50,7 @@ public class QuestionController {
 
 		final JsonResponseEntity<Question> response = new JsonResponseEntity<>();
 
-		if (CommonUtils.isValidObject(response)) {
+		if (CommonUtils.isValidObject(question)) {
 			response.setStatus(StringConstants.success);
 			response.setMessage(StringConstants.questionFetchedMessage);
 			response.setResult(question);
@@ -67,7 +67,7 @@ public class QuestionController {
 
 		final JsonResponseEntity<Question> response = new JsonResponseEntity<>();
 
-		if (CommonUtils.isValidObject(response)) {
+		if (CommonUtils.isValidObject(updatedQuestion)) {
 			response.setStatus(StringConstants.success);
 			response.setMessage(StringConstants.questionUpdatedMessage);
 			response.setResult(updatedQuestion);
@@ -84,7 +84,7 @@ public class QuestionController {
 
 		final JsonResponseEntity<Question> response = new JsonResponseEntity<>();
 
-		if (CommonUtils.isValidObject(response)) {
+		if (CommonUtils.isValidObject(deletedQuestion)) {
 			response.setStatus(StringConstants.success);
 			response.setMessage(StringConstants.questionDeletedMessage);
 			response.setResult(deletedQuestion);

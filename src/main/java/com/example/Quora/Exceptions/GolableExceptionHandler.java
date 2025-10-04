@@ -36,6 +36,19 @@ public class GolableExceptionHandler {
 
 		return response;
 	}
+	
+	@ExceptionHandler(AnswerNotFoundException.class)
+	public JsonResponseEntity<UserDto> handleAnswerNotFound(final AnswerNotFoundException exception) {
+		final JsonResponseEntity<UserDto> response = new JsonResponseEntity<>();
+
+		response.setStatus(StringConstants.failed);
+		response.setMessage(exception.getMessage());
+		response.setResult(null);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.NOT_FOUND);
+
+		return response;
+	}
 
 	@ExceptionHandler(InvalidInputException.class)
 	public JsonResponseEntity<?> handleInvalidInput(final InvalidInputException exception) {

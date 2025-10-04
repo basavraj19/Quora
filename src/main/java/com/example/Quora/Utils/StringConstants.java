@@ -27,4 +27,10 @@ public class StringConstants {
 	public static String questionUpdatedMessage = "Question Updated Successfully";
 
 	public static String questionDeletedMessage = "Question Deleted Successfully";
+
+	public static String answerCreatedMessage = "Answer Created Successfully";
+
+	public static String answerFetchedMessage = "Answer Details fetched Successfully";
+
+	public static String answerDeletedMessage = "Answer Deleted Successfully";
 }
