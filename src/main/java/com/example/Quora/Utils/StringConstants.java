@@ -1,6 +1,6 @@
 package com.example.Quora.Utils;
 
-public class StringUtils {
+public class StringConstants {
 
 	public static String success = "Success";
 
@@ -13,10 +13,18 @@ public class StringUtils {
 	public static String userFetchedMessage = "User Details fetched Successfully";
 
 	public static String failedRequestProcessingMessage = "Something went wrong while processing your request";
-	
+
 	public static String userDeletedMessage = "User Deleted Successfully";
-	
+
 	public static String passwordUpdatedMessage = "Password Updated Successfully";
-	
+
 	public static String inValidPasswordMessage = "Invalid Password";
+
+	public static String questionCreatedMessage = "Question Created Successfully";
+
+	public static String questionFetchedMessage = "Question Details fetched Successfully";
+
+	public static String questionUpdatedMessage = "Question Updated Successfully";
+
+	public static String questionDeletedMessage = "Question Deleted Successfully";
 }

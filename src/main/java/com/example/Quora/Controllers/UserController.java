@@ -17,7 +17,7 @@ import com.example.Quora.Exceptions.UserNotFoundException;
 import com.example.Quora.Services.UserService;
 import com.example.Quora.Utils.CommonUtils;
 import com.example.Quora.Utils.JsonResponseEntity;
-import com.example.Quora.Utils.StringUtils;
+import com.example.Quora.Utils.StringConstants;
 
 @RestController
 @RequestMapping("/user")
@@ -33,14 +33,14 @@ public class UserController {
 		final JsonResponseEntity<UserDto> response = new JsonResponseEntity<>();
 
 		if (CommonUtils.isValidObject(newUser)) {
-			response.setStatus(StringUtils.success);
-			response.setMessage(StringUtils.userCreatedMessage);
+			response.setStatus(StringConstants.success);
+			response.setMessage(StringConstants.userCreatedMessage);
 			response.setResult(newUser);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.CREATED);
 		} else {
-			response.setStatus(StringUtils.failed);
-			response.setMessage(StringUtils.failedUserCreatedMessage);
+			response.setStatus(StringConstants.failed);
+			response.setMessage(StringConstants.failedUserCreatedMessage);
 			response.setResult(null);
 			response.setException(new Exception("Internal Server Error"));
 			response.setStatusCode(HttpStatus.CREATED);
@@ -56,14 +56,14 @@ public class UserController {
 		final JsonResponseEntity<UserDto> response = new JsonResponseEntity<>();
 
 		if (CommonUtils.isValidObject(exsistingUser)) {
-			response.setStatus(StringUtils.success);
-			response.setMessage(StringUtils.userFetchedMessage);
+			response.setStatus(StringConstants.success);
+			response.setMessage(StringConstants.userFetchedMessage);
 			response.setResult(exsistingUser);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.ACCEPTED);
 		} else {
-			response.setStatus(StringUtils.failed); 
-			response.setMessage(StringUtils.inValidPasswordMessage);
+			response.setStatus(StringConstants.failed); 
+			response.setMessage(StringConstants.inValidPasswordMessage);
 			response.setResult(null);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.BAD_REQUEST);
@@ -79,8 +79,8 @@ public class UserController {
 		final JsonResponseEntity<UserDto> response = new JsonResponseEntity<>();
 
 		if (CommonUtils.isValidObject(user)) {
-			response.setStatus(StringUtils.success);
-			response.setMessage(StringUtils.userFetchedMessage);
+			response.setStatus(StringConstants.success);
+			response.setMessage(StringConstants.userFetchedMessage);
 			response.setResult(user);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.OK);
@@ -95,8 +95,8 @@ public class UserController {
 		final JsonResponseEntity<UserDto> response = new JsonResponseEntity<>();
 
 		if (CommonUtils.isValidObject(user)) {
-			response.setStatus(StringUtils.success);
-			response.setMessage(StringUtils.userDeletedMessage);
+			response.setStatus(StringConstants.success);
+			response.setMessage(StringConstants.userDeletedMessage);
 			response.setResult(user);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.OK);
@@ -112,8 +112,8 @@ public class UserController {
 		final JsonResponseEntity<UserDto> response = new JsonResponseEntity<>();
 
 		if (CommonUtils.isValidObject(user)) {
-			response.setStatus(StringUtils.success);
-			response.setMessage(StringUtils.passwordUpdatedMessage);
+			response.setStatus(StringConstants.success);
+			response.setMessage(StringConstants.passwordUpdatedMessage);
 			response.setResult(updatedUser);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.OK);

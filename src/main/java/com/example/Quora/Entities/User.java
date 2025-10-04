@@ -1,7 +1,11 @@
 package com.example.Quora.Entities;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,4 +31,7 @@ public class User extends BaseModel {
 
 	@Column(nullable = false)
 	private String password;
+	
+	@OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+	private List<Question> questions;
 }
