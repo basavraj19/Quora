@@ -8,4 +8,5 @@ import com.example.Quora.Entities.Like;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Integer> {
 
+	public Long findLikeCountByAnswerId(int ansId);
 }

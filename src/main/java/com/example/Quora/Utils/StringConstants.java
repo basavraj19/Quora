@@ -33,4 +33,10 @@ public class StringConstants {
 	public static String answerFetchedMessage = "Answer Details fetched Successfully";
 
 	public static String answerDeletedMessage = "Answer Deleted Successfully";
+	
+	public static String commentCreatedMessage = "Comment Created Successfully";
+
+	public static String commentFetchedMessage = "Comment Details fetched Successfully";
+
+	public static String commentDeletedMessage = "Comment Deleted Successfully";
 }
