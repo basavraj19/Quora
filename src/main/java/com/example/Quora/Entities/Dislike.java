@@ -5,6 +5,8 @@ import java.util.Date;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -37,7 +39,8 @@ public class Dislike {
 	private int id;
 
 	@ManyToOne
-	@JoinColumn(name = "answerId")
+	@JoinColumn(name = "answerId", nullable = false)
+	@JsonBackReference
 	private Answer answer;
 
 	@Column(nullable = false)

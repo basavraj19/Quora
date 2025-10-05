@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Quora.DTO.QuestionDto;
 import com.example.Quora.Entities.Question;
 import com.example.Quora.Exceptions.InvalidInputException;
 import com.example.Quora.Exceptions.QuestionNotFoundException;
@@ -27,7 +28,7 @@ public class QuestionController {
 	private QuestionService questionService;
 
 	@PostMapping("/create")
-	public JsonResponseEntity<Question> createNewQuestion(@RequestBody final Question question)
+	public JsonResponseEntity<Question> createNewQuestion(@RequestBody final QuestionDto question)
 			throws InvalidInputException {
 		final Question newQuestion = questionService.createNewQuestion(question);
 

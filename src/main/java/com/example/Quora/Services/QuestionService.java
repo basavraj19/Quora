@@ -3,7 +3,10 @@ package com.example.Quora.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Quora.DTO.QuestionDto;
+import com.example.Quora.DTO.UserDto;
 import com.example.Quora.Entities.Question;
+import com.example.Quora.Entities.User;
 import com.example.Quora.Exceptions.InvalidInputException;
 import com.example.Quora.Exceptions.QuestionNotFoundException;
 import com.example.Quora.Repositories.QuestionRepository;
@@ -16,10 +19,20 @@ public class QuestionService {
 	@Autowired
 	private QuestionRepository questionRepository;
 
-	public Question createNewQuestion(final Question question) throws InvalidInputException {
-		if (question.getQuestion() == null || StringUtils.isBlank(question.getQuestion())) {
+	@Autowired
+	private UserService userService;
+
+	public Question createNewQuestion(final QuestionDto questionDto) throws InvalidInputException {
+		if (questionDto.getQuestion() == null || StringUtils.isBlank(questionDto.getQuestion())) {
 			throw new InvalidInputException("Invalid Question content.");
 		}
+		final UserDto userDto = userService.getUserByUserName(questionDto.getUserName());
+
+		final User user = User.builder().id(userDto.getUserId()).userName(userDto.getEmail())
+				.firstName(userDto.getFirstName()).lastName(userDto.getLastName()).build();
+
+		final Question question = Question.builder().question(questionDto.getQuestion())
+				.createdBy(questionDto.getCreatedBy()).modifiedBy(questionDto.getModifiedBy()).user(user).build();
 
 		Question newQuestion = questionRepository.save(question);
 
@@ -35,7 +48,8 @@ public class QuestionService {
 				.orElseThrow(() -> new QuestionNotFoundException("Question with id " + qId + " not found."));
 	}
 
-	public Question updateQuestion(final int qId, final String question) throws QuestionNotFoundException, InvalidInputException {
+	public Question updateQuestion(final int qId, final String question)
+			throws QuestionNotFoundException, InvalidInputException {
 
 		if (question == null || StringUtils.isBlank(question)) {
 			throw new InvalidInputException("Invalid Question content.");
