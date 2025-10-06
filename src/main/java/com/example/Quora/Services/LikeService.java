@@ -3,6 +3,8 @@ package com.example.Quora.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Quora.DTO.LikeDto;
+import com.example.Quora.Entities.Answer;
 import com.example.Quora.Entities.Like;
 import com.example.Quora.Exceptions.InvalidInputException;
 import com.example.Quora.Repositories.LikeRepository;
@@ -16,10 +18,17 @@ public class LikeService {
 	@Autowired
 	private LikeRepository likeRepository;
 
-	public Like newLike(final Like like) throws InvalidInputException {
-		if (!CommonUtils.isValidObject(like) && StringUtils.isBlank(like.getCreatedBy())) {
+	@Autowired
+	private AnswerService answerService;
+
+	public Like newLike(final LikeDto likeDto) throws InvalidInputException {
+		if (!CommonUtils.isValidObject(likeDto) && StringUtils.isBlank(likeDto.getCreatedBy())) {
 			throw new InvalidInputException("Invalid Request");
 		}
+
+		final Answer answer = answerService.getAnswerByAnswerId(likeDto.getAnsId());
+
+		final Like like = Like.builder().answer(answer).createdBy(likeDto.getCreatedBy()).build();
 
 		final Like newLike = likeRepository.save(like);
 

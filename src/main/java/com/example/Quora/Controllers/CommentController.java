@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Quora.DTO.CommentDto;
 import com.example.Quora.Entities.Comment;
 import com.example.Quora.Exceptions.CommentNotFoundException;
 import com.example.Quora.Exceptions.InvalidInputException;
@@ -26,7 +27,7 @@ public class CommentController {
 	private CommentService commentService;
 
 	@PostMapping("/create")
-	public JsonResponseEntity<Comment> createNewComment(@RequestBody final Comment comment)
+	public JsonResponseEntity<Comment> createNewComment(@RequestBody final CommentDto comment)
 			throws InvalidInputException {
 		final Comment newComment = commentService.createComment(comment);
 

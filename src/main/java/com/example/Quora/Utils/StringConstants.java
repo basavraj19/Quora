@@ -39,4 +39,8 @@ public class StringConstants {
 	public static String commentFetchedMessage = "Comment Details fetched Successfully";
 
 	public static String commentDeletedMessage = "Comment Deleted Successfully";
+	
+	public static String LikeEntryCreatedMessage = "Like entry Created Successfully";
+
+	public static String LikedetailsFetchedMessage = "Like Details fetched Successfully";
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Quora.DTO.AnswerDto;
 import com.example.Quora.Entities.Answer;
 import com.example.Quora.Exceptions.AnswerNotFoundException;
 import com.example.Quora.Exceptions.InvalidInputException;
@@ -26,7 +27,7 @@ public class AnswerController {
 	private AnswerService answerService;
 
 	@PostMapping("/create")
-	public JsonResponseEntity<Answer> createAnswer(@RequestBody final Answer ans) throws InvalidInputException {
+	public JsonResponseEntity<Answer> createAnswer(@RequestBody final AnswerDto ans) throws InvalidInputException {
 		final Answer newAnswer = answerService.createNewAnswer(ans);
 
 		final JsonResponseEntity<Answer> response = new JsonResponseEntity<>();

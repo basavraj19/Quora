@@ -3,6 +3,8 @@ package com.example.Quora.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Quora.DTO.CommentDto;
+import com.example.Quora.Entities.Answer;
 import com.example.Quora.Entities.Comment;
 import com.example.Quora.Exceptions.CommentNotFoundException;
 import com.example.Quora.Exceptions.InvalidInputException;
@@ -16,10 +18,18 @@ public class CommentService {
 	@Autowired
 	private CommentRepository commentRepository;
 
-	public Comment createComment(final Comment comment) throws InvalidInputException {
-		if (comment.getComment() == null || StringUtils.isBlank(comment.getComment())) {
+	@Autowired
+	private AnswerService answerService;
+
+	public Comment createComment(final CommentDto commentDto) throws InvalidInputException {
+		if (commentDto.getComment() == null || StringUtils.isBlank(commentDto.getComment())) {
 			throw new InvalidInputException("Invalid Comment content.");
 		}
+
+		final Answer answer = answerService.getAnswerByAnswerId(commentDto.getAnsId());
+
+		final Comment comment = Comment.builder().comment(commentDto.getComment()).createdBy(commentDto.getCreatedBy())
+				.modifiedBy(commentDto.getModifiedBy()).answer(answer).build();
 
 		final Comment newComment = commentRepository.save(comment);
 
