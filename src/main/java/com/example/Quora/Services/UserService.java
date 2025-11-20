@@ -84,7 +84,7 @@ public class UserService {
 				.orElseThrow(() -> new UserNotFoundException("User not found."));
 
 		if (CommonUtils.isValidObject(user)) {
-			final String encodedPassword = encryptPassword(user.getPassword());
+			final String encodedPassword = encryptPassword(password);
 			user.setPassword(encodedPassword);
 			userRepository.save(user);
 			final UserDto dto = userDto.convertToUserDto(user);
