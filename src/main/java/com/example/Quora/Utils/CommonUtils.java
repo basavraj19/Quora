@@ -9,5 +9,12 @@ public class CommonUtils {
 
 		return false;
 	}
-	
+
+	public static boolean isValidString(final String str) {
+		if (str != null && str.length() > 0) {
+			return true;
+		}
+
+		return false;
+	}
 }

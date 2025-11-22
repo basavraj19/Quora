@@ -9,6 +9,7 @@ import com.example.Quora.Entities.User;
 import com.example.Quora.Exceptions.UserNotFoundException;
 import com.example.Quora.Repositories.UserRepository;
 import com.example.Quora.Utils.CommonUtils;
+import com.example.Quora.Utils.JWTUtils;
 
 @Service
 public class UserService {
@@ -18,6 +19,9 @@ public class UserService {
 
 	@Autowired
 	private UserDto userDto;
+	
+	@Autowired
+	private JWTUtils jwtUtils;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -35,7 +39,7 @@ public class UserService {
 		return null;
 	}
 	
-	public UserDto login(final User user) throws UserNotFoundException {
+	public String login(final User user) throws UserNotFoundException {
 		final User existingUser = userRepository.findByUserName(user.getUserName()).orElseThrow(
 				() -> new UserNotFoundException("user "+user.getUserName()+" not found."));
 		
@@ -43,9 +47,8 @@ public class UserService {
 			boolean isvalidUser = passwordEncoder.matches(user.getPassword(), existingUser.getPassword());
 			
 			if(isvalidUser) {
-				final UserDto dto = userDto.convertToUserDto(existingUser);
-
-				return dto;
+				final String jwt = jwtUtils.generateToken(user.getUserName());
+				return jwt;
 			}
 		}
 		

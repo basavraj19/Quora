@@ -1,7 +1,10 @@
 package com.example.Quora.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -50,26 +53,36 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public JsonResponseEntity<UserDto> login(@RequestBody final User user) throws UserNotFoundException {
-		final UserDto exsistingUser = userService.login(user);
+	public ResponseEntity<JsonResponseEntity<String>> login(@RequestBody final User user) throws UserNotFoundException {
+		final String jwt = userService.login(user);
 
-		final JsonResponseEntity<UserDto> response = new JsonResponseEntity<>();
+		final JsonResponseEntity<String> response = new JsonResponseEntity<>();
 
-		if (CommonUtils.isValidObject(exsistingUser)) {
+		final long expiryTime = 5 * 60;
+		
+		final ResponseCookie jwtCookie = ResponseCookie.from("jwtToken", jwt)
+				.httpOnly(true)
+				.secure(false)
+				.path("/")
+				.sameSite("None")
+				.maxAge(expiryTime)
+				.build();
+		
+		if (CommonUtils.isValidString(jwt)) {
 			response.setStatus(StringConstants.success);
 			response.setMessage(StringConstants.userFetchedMessage);
-			response.setResult(exsistingUser);
+			response.setResult(null);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.ACCEPTED);
 		} else {
-			response.setStatus(StringConstants.failed); 
+			response.setStatus(StringConstants.failed);
 			response.setMessage(StringConstants.inValidPasswordMessage);
 			response.setResult(null);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.BAD_REQUEST);
 		}
 
-		return response;
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(response);
 	}
 
 	@GetMapping("/search")
