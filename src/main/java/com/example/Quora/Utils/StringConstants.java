@@ -43,4 +43,8 @@ public class StringConstants {
 	public static String LikeEntryCreatedMessage = "Like entry Created Successfully";
 
 	public static String LikedetailsFetchedMessage = "Like Details fetched Successfully";
+	
+	public static String roleCreatedMessage = "Role Created Successfully";
+	
+	public static String deatilsFetchedMessage = "Details Fetched Successfully";
 }

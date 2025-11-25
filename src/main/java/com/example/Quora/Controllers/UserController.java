@@ -46,7 +46,7 @@ public class UserController {
 			response.setMessage(StringConstants.failedUserCreatedMessage);
 			response.setResult(null);
 			response.setException(new Exception("Internal Server Error"));
-			response.setStatusCode(HttpStatus.CREATED);
+			response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		return response;

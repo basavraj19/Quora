@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.Quora.DTO.UserDto;
 import com.example.Quora.Entities.User;
+import com.example.Quora.Exceptions.UserAlreadyExistsException;
 import com.example.Quora.Exceptions.UserNotFoundException;
 import com.example.Quora.Repositories.UserRepository;
 import com.example.Quora.Utils.CommonUtils;
@@ -19,7 +20,7 @@ public class UserService {
 
 	@Autowired
 	private UserDto userDto;
-	
+
 	@Autowired
 	private JWTUtils jwtUtils;
 
@@ -27,6 +28,12 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 
 	public UserDto createNewUser(final User user) throws Exception {
+
+		final User existingUser = userRepository.findByUserName(user.getUserName()).orElse(null);
+
+		if (existingUser != null) {
+			throw new UserAlreadyExistsException("User alredy present.");
+		}
 
 		if (CommonUtils.isValidObject(user)) {
 			final String encodedPassword = encryptPassword(user.getPassword());
@@ -38,20 +45,20 @@ public class UserService {
 
 		return null;
 	}
-	
+
 	public String login(final User user) throws UserNotFoundException {
-		final User existingUser = userRepository.findByUserName(user.getUserName()).orElseThrow(
-				() -> new UserNotFoundException("user "+user.getUserName()+" not found."));
-		
-		if(CommonUtils.isValidObject(existingUser)) {
+		final User existingUser = userRepository.findByUserName(user.getUserName())
+				.orElseThrow(() -> new UserNotFoundException("user " + user.getUserName() + " not found."));
+
+		if (CommonUtils.isValidObject(existingUser)) {
 			boolean isvalidUser = passwordEncoder.matches(user.getPassword(), existingUser.getPassword());
-			
-			if(isvalidUser) {
+
+			if (isvalidUser) {
 				final String jwt = jwtUtils.generateToken(user.getUserName());
 				return jwt;
 			}
 		}
-		
+
 		return null;
 	}
 
