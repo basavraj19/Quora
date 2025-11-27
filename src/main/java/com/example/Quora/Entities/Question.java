@@ -36,6 +36,6 @@ public class Question extends BaseModel {
 	private User user;
 
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonManagedReference 
 	private List<Answer> answers;
 }

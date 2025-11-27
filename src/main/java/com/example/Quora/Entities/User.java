@@ -3,7 +3,9 @@ package com.example.Quora.Entities;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,6 +29,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Quora_User_Dtl")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User extends BaseModel {
 
 	@Column(nullable = false, unique = true)
@@ -45,6 +48,5 @@ public class User extends BaseModel {
 
 	@ManyToMany
 	@JoinTable(name = "quora_user_role_map_dtl", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	@JsonManagedReference
 	private Set<Role> roles;
 }

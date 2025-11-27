@@ -4,6 +4,8 @@ import java.util.Set;
 
 import com.example.Quora.Utils.RoleEnum;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,13 +26,14 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "quora_role_dtl")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Role extends BaseModel {
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private RoleEnum role;
 
 	@ManyToMany(mappedBy = "roles")
-	@JsonBackReference
+	@JsonBackReference(value = "user-role")
 	private Set<User> users;
 }

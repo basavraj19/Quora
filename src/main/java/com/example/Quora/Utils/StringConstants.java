@@ -33,18 +33,20 @@ public class StringConstants {
 	public static String answerFetchedMessage = "Answer Details fetched Successfully";
 
 	public static String answerDeletedMessage = "Answer Deleted Successfully";
-	
+
 	public static String commentCreatedMessage = "Comment Created Successfully";
 
 	public static String commentFetchedMessage = "Comment Details fetched Successfully";
 
 	public static String commentDeletedMessage = "Comment Deleted Successfully";
-	
+
 	public static String LikeEntryCreatedMessage = "Like entry Created Successfully";
 
 	public static String LikedetailsFetchedMessage = "Like Details fetched Successfully";
-	
+
 	public static String roleCreatedMessage = "Role Created Successfully";
-	
+
+	public static String RoleDeletedMessage = "Role Deleted Successfully";
+
 	public static String deatilsFetchedMessage = "Details Fetched Successfully";
 }
