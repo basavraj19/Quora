@@ -1,10 +1,11 @@
 package com.example.Quora.Config;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -32,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 			return;
 		}
-		
+
 		Cookie[] cookies = request.getCookies();
 
 		if (cookies == null) {
@@ -51,8 +52,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		if (token != null && !jwtUtils.isTokenExpired(token)) {
 			String username = jwtUtils.extractUserName(token);
+			List<GrantedAuthority> authorities = jwtUtils.extractRoles(token);
+
 			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null,
-					Collections.emptyList());
+					authorities);
 
 			SecurityContextHolder.getContext().setAuthentication(authToken);
 		} else {

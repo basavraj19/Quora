@@ -1,16 +1,22 @@
 package com.example.Quora.Services;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.Quora.DTO.UserDto;
+import com.example.Quora.Entities.Role;
 import com.example.Quora.Entities.User;
 import com.example.Quora.Exceptions.UserAlreadyExistsException;
 import com.example.Quora.Exceptions.UserNotFoundException;
 import com.example.Quora.Repositories.UserRepository;
 import com.example.Quora.Utils.CommonUtils;
 import com.example.Quora.Utils.JWTUtils;
+import com.example.Quora.Utils.RoleEnum;
 
 @Service
 public class UserService {
@@ -54,12 +60,19 @@ public class UserService {
 			boolean isvalidUser = passwordEncoder.matches(user.getPassword(), existingUser.getPassword());
 
 			if (isvalidUser) {
-				final String jwt = jwtUtils.generateToken(user.getUserName());
+				final List<RoleEnum> roles = getUserRoles(existingUser);
+				final String jwt = jwtUtils.generateToken(user.getUserName(), roles);
 				return jwt;
 			}
 		}
 
 		return null;
+	}
+
+	public List<RoleEnum> getUserRoles(final User user) {
+		Set<Role> roles = user.getRoles();
+		List<RoleEnum> userRole = roles.stream().map(role -> role.getRole()).collect(Collectors.toList());
+		return userRole;
 	}
 
 	public UserDto getUserByUserName(final String userName) throws UserNotFoundException {
