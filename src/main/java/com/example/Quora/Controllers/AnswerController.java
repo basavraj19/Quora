@@ -28,6 +28,7 @@ public class AnswerController {
 
 	@PostMapping("/create")
 	public JsonResponseEntity<Answer> createAnswer(@RequestBody final AnswerDto ans) throws InvalidInputException {
+		System.out.print("Question id is basavraj"+ans.getQId());
 		final Answer newAnswer = answerService.createNewAnswer(ans);
 
 		final JsonResponseEntity<Answer> response = new JsonResponseEntity<>();

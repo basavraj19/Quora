@@ -1,5 +1,7 @@
 package com.example.Quora.Services;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +11,11 @@ import com.example.Quora.Entities.Question;
 import com.example.Quora.Entities.User;
 import com.example.Quora.Exceptions.InvalidInputException;
 import com.example.Quora.Exceptions.QuestionNotFoundException;
+import com.example.Quora.Exceptions.UnauthorizedException;
 import com.example.Quora.Repositories.QuestionRepository;
 
 import io.micrometer.common.util.StringUtils;
+import jakarta.transaction.Transactional;
 
 @Service
 public class QuestionService {
@@ -48,25 +52,44 @@ public class QuestionService {
 				.orElseThrow(() -> new QuestionNotFoundException("Question with id " + qId + " not found."));
 	}
 
-	public Question updateQuestion(final int qId, final String question)
-			throws QuestionNotFoundException, InvalidInputException {
-
-		if (question == null || StringUtils.isBlank(question)) {
+	public Question updateQuestion(final Question question) throws QuestionNotFoundException, InvalidInputException {
+		final String loggedInUsername = userService.getLoggedInUserName();
+		
+		if (question == null || StringUtils.isBlank(question.getQuestion())) {
 			throw new InvalidInputException("Invalid Question content.");
 		}
 
-		Question existingQuestion = getQuestionByQuestionId(qId);
+		Question existingQuestion = getQuestionByQuestionId(question.getId());
 
-		existingQuestion.setQuestion(question);
+		if(!loggedInUsername.equals(existingQuestion.getCreatedBy())) {
+			throw new UnauthorizedException("You are not authorized to perform this operation.");
+		}
+		
+		existingQuestion.setQuestion(question.getQuestion());
+		existingQuestion.setModifiedBy(loggedInUsername);
+		existingQuestion.setModifiedAt(new Date());
+
 		final Question updatedQuestion = questionRepository.save(existingQuestion);
 
 		return updatedQuestion;
 	}
 
+	@Transactional
 	public Question deleteQuestionByQuestionId(final int qId) throws QuestionNotFoundException, InvalidInputException {
+		final String loggedInUsername = userService.getLoggedInUserName();
+		final boolean isAdmin = userService.isloggedInUserAdmin();
+
 		Question existingQuestion = getQuestionByQuestionId(qId);
 
-		questionRepository.deleteById(qId);
+		if (!(loggedInUsername.equals(existingQuestion.getCreatedBy()) || isAdmin)) {
+			throw new UnauthorizedException("You are not authorized to perform delete operation.");
+		}
+
+		try {
+			questionRepository.deleteById(qId);
+		} catch (Exception e) {
+			throw e;
+		}
 
 		return existingQuestion;
 	}

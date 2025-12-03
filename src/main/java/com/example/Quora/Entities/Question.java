@@ -35,7 +35,7 @@ public class Question extends BaseModel {
 	@JsonBackReference
 	private User user;
 
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference 
 	private List<Answer> answers;
 }

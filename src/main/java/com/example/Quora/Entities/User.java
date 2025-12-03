@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
@@ -42,7 +41,7 @@ public class User extends BaseModel {
 	@Column(nullable = false)
 	private String password;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	@JsonManagedReference
 	private List<Question> questions;
 

@@ -64,7 +64,7 @@ public class QuestionController {
 	@PutMapping("/updateQuestion")
 	public JsonResponseEntity<Question> updateQuestion(@RequestBody final Question question)
 			throws InvalidInputException, QuestionNotFoundException {
-		final Question updatedQuestion = questionService.updateQuestion(question.getId(), question.getQuestion());
+		final Question updatedQuestion = questionService.updateQuestion(question);
 
 		final JsonResponseEntity<Question> response = new JsonResponseEntity<>();
 

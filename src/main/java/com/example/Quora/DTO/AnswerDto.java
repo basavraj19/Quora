@@ -1,5 +1,7 @@
 package com.example.Quora.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +19,8 @@ public class AnswerDto {
 
 	private String createdBy;
 
-	private String modofiedBy;
+	private String modifiedBy;
 
+	@JsonProperty("qId")
 	private int qId;
 }

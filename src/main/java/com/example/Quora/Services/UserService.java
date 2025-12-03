@@ -5,12 +5,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.Quora.DTO.UserDto;
 import com.example.Quora.Entities.Role;
 import com.example.Quora.Entities.User;
+import com.example.Quora.Exceptions.UnauthorizedException;
 import com.example.Quora.Exceptions.UserAlreadyExistsException;
 import com.example.Quora.Exceptions.UserNotFoundException;
 import com.example.Quora.Repositories.UserRepository;
@@ -89,6 +92,13 @@ public class UserService {
 	}
 
 	public UserDto deleteUser(final String userName) throws UserNotFoundException {
+		final String loggedInUser = getLoggedInUserName();
+		final boolean isAdmin = isloggedInUserAdmin();
+
+		if (!(loggedInUser.equals(userName) || isAdmin)) {
+			throw new UnauthorizedException("You are not authorized to perform delete operation.");
+		}
+		
 		final User user = userRepository.findByUserName(userName)
 				.orElseThrow(() -> new UserNotFoundException("User not found."));
 
@@ -103,6 +113,12 @@ public class UserService {
 	}
 
 	public UserDto updatePassword(final String userName, final String password) throws UserNotFoundException {
+		final String loggedInUser = getLoggedInUserName();
+
+		if (!loggedInUser.equals(userName)) {
+			throw new UnauthorizedException("You are not authorized to perform update operation.");
+		}
+		
 		final User user = userRepository.findByUserName(userName)
 				.orElseThrow(() -> new UserNotFoundException("User not found."));
 
@@ -120,5 +136,16 @@ public class UserService {
 
 	public String encryptPassword(final String password) {
 		return passwordEncoder.encode(password);
+	}
+	
+	public String getLoggedInUserName() {
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth.getName();
+	}
+
+	public boolean isloggedInUserAdmin() {
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth.getAuthorities().stream()
+				.anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
 	}
 }

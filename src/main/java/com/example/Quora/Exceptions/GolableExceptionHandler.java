@@ -113,4 +113,17 @@ public class GolableExceptionHandler {
 
 		return response;
 	}
+
+	@ExceptionHandler(UnauthorizedException.class)
+	public JsonResponseEntity<?> handleUnauthorizedException(final UnauthorizedException exception) {
+		JsonResponseEntity<?> response = new JsonResponseEntity<>();
+
+		response.setStatus(StringConstants.failed);
+		response.setMessage(exception.getMessage());
+		response.setResult(null);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.UNAUTHORIZED);
+
+		return response;
+	}
 }
