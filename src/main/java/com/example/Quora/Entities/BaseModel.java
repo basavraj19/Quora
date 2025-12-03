@@ -2,7 +2,9 @@ package com.example.Quora.Entities;
 
 import java.util.Date;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -34,6 +36,7 @@ public class BaseModel {
 	private int id;
 
 	@Column(nullable = false)
+	@CreatedBy
 	private String createdBy;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -41,6 +44,7 @@ public class BaseModel {
 	private Date createdAt;
 
 	@Column(nullable = false)
+	@LastModifiedBy
 	private String modifiedBy;
 
 	@Temporal(TemporalType.TIMESTAMP)

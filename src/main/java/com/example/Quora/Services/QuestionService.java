@@ -30,7 +30,8 @@ public class QuestionService {
 		if (questionDto.getQuestion() == null || StringUtils.isBlank(questionDto.getQuestion())) {
 			throw new InvalidInputException("Invalid Question content.");
 		}
-		final UserDto userDto = userService.getUserByUserName(questionDto.getUserName());
+		final String loggedInUser = userService.getLoggedInUserName();
+		final UserDto userDto = userService.getUserByUserName(loggedInUser);
 
 		final User user = User.builder().id(userDto.getUserId()).userName(userDto.getEmail())
 				.firstName(userDto.getFirstName()).lastName(userDto.getLastName()).build();
@@ -54,17 +55,17 @@ public class QuestionService {
 
 	public Question updateQuestion(final Question question) throws QuestionNotFoundException, InvalidInputException {
 		final String loggedInUsername = userService.getLoggedInUserName();
-		
+
 		if (question == null || StringUtils.isBlank(question.getQuestion())) {
 			throw new InvalidInputException("Invalid Question content.");
 		}
 
 		Question existingQuestion = getQuestionByQuestionId(question.getId());
 
-		if(!loggedInUsername.equals(existingQuestion.getCreatedBy())) {
+		if (!loggedInUsername.equals(existingQuestion.getCreatedBy())) {
 			throw new UnauthorizedException("You are not authorized to perform this operation.");
 		}
-		
+
 		existingQuestion.setQuestion(question.getQuestion());
 		existingQuestion.setModifiedBy(loggedInUsername);
 		existingQuestion.setModifiedAt(new Date());
