@@ -2,10 +2,9 @@ package com.example.Quora.Entities;
 
 import java.util.Date;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,8 +12,6 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -38,12 +35,11 @@ public class Like {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@ManyToOne
-	@JoinColumn(name = "answerId", nullable = false)
-	@JsonBackReference
-	private Answer answer;
+	@Column(name = "answerId", nullable = false)
+	private int answerId;
 
 	@Column(nullable = false)
+	@CreatedBy
 	private String createdBy;
 
 	@Temporal(TemporalType.TIMESTAMP)

@@ -36,8 +36,7 @@ public class AnswerService {
 
 		final Question question = questionService.getQuestionByQuestionId(ans.getQId());
 
-		final Answer answer = Answer.builder().answer(ans.getAnswer()).createdBy(ans.getCreatedBy())
-				.modifiedBy(ans.getModifiedBy()).question(question).build();
+		final Answer answer = Answer.builder().answer(ans.getAnswer()).question(question).build();
 
 		final Answer newAnswer = answerRepository.save(answer);
 

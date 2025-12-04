@@ -98,7 +98,7 @@ public class UserService {
 		if (!(loggedInUser.equals(userName) || isAdmin)) {
 			throw new UnauthorizedException("You are not authorized to perform delete operation.");
 		}
-		
+
 		final User user = userRepository.findByUserName(userName)
 				.orElseThrow(() -> new UserNotFoundException("User not found."));
 
@@ -118,7 +118,7 @@ public class UserService {
 		if (!loggedInUser.equals(userName)) {
 			throw new UnauthorizedException("You are not authorized to perform update operation.");
 		}
-		
+
 		final User user = userRepository.findByUserName(userName)
 				.orElseThrow(() -> new UserNotFoundException("User not found."));
 
@@ -137,7 +137,7 @@ public class UserService {
 	public String encryptPassword(final String password) {
 		return passwordEncoder.encode(password);
 	}
-	
+
 	public String getLoggedInUserName() {
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		return auth.getName();

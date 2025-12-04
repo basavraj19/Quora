@@ -54,10 +54,7 @@ public class RoleService {
 	public Role deleteRole(final int roleId) throws ResourceNotFoundException, InvalidInputException {
 		final Role role = getRoleById(roleId);
 
-		if (role != null) {
-			roleRepository.deleteById(roleId);
-			return role;
-		}
-		return null;
+		roleRepository.deleteById(roleId);
+		return role;
 	}
 }

@@ -27,20 +27,23 @@ public class LikeService {
 		}
 
 		final Answer answer = answerService.getAnswerByAnswerId(likeDto.getAnsId());
+		Like newLike = null;
 
-		final Like like = Like.builder().answer(answer).createdBy(likeDto.getCreatedBy()).build();
+		if (answer != null) {
+			final Like like = Like.builder().answerId(likeDto.getAnsId()).build();
 
-		final Like newLike = likeRepository.save(like);
+			newLike = likeRepository.save(like);
+		}
 
 		return newLike;
 	}
 
-	public Long getLikeCountByAnswerId(final int ansId) throws InvalidInputException {
+	public int getLikeCountByAnswerId(final int ansId) throws InvalidInputException {
 		if (ansId <= 0) {
 			throw new InvalidInputException("Invalid Answer ID.");
 		}
 
-		final Long likes = likeRepository.findLikeCountByAnswerId(ansId);
+		final int likes = likeRepository.findLikeCountByAnswerId(ansId);
 
 		return likes;
 	}

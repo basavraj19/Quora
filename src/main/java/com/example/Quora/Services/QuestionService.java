@@ -1,6 +1,5 @@
 package com.example.Quora.Services;
 
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +35,7 @@ public class QuestionService {
 		final User user = User.builder().id(userDto.getUserId()).userName(userDto.getEmail())
 				.firstName(userDto.getFirstName()).lastName(userDto.getLastName()).build();
 
-		final Question question = Question.builder().question(questionDto.getQuestion())
-				.createdBy(questionDto.getCreatedBy()).modifiedBy(questionDto.getModifiedBy()).user(user).build();
+		final Question question = Question.builder().question(questionDto.getQuestion()).user(user).build();
 
 		Question newQuestion = questionRepository.save(question);
 
@@ -67,8 +65,6 @@ public class QuestionService {
 		}
 
 		existingQuestion.setQuestion(question.getQuestion());
-		existingQuestion.setModifiedBy(loggedInUsername);
-		existingQuestion.setModifiedAt(new Date());
 
 		final Question updatedQuestion = questionRepository.save(existingQuestion);
 

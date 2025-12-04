@@ -36,8 +36,7 @@ public class CommentService {
 
 		final Answer answer = answerService.getAnswerByAnswerId(commentDto.getAnsId());
 
-		final Comment comment = Comment.builder().comment(commentDto.getComment()).createdBy(commentDto.getCreatedBy())
-				.modifiedBy(commentDto.getModifiedBy()).answer(answer).build();
+		final Comment comment = Comment.builder().comment(commentDto.getComment()).answer(answer).build();
 
 		final Comment newComment = commentRepository.save(comment);
 

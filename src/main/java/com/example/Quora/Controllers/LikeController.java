@@ -42,10 +42,10 @@ public class LikeController {
 	}
 
 	@GetMapping("/getLikes/{answerId}")
-	public JsonResponseEntity<Long> getLikeCount(@PathVariable final int answerId) throws InvalidInputException {
-		final Long likes = likeService.getLikeCountByAnswerId(answerId);
+	public JsonResponseEntity<Integer> getLikeCount(@PathVariable final int answerId) throws InvalidInputException {
+		final int likes = likeService.getLikeCountByAnswerId(answerId);
 
-		final JsonResponseEntity<Long> response = new JsonResponseEntity<>();
+		final JsonResponseEntity<Integer> response = new JsonResponseEntity<>();
 
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.LikedetailsFetchedMessage);

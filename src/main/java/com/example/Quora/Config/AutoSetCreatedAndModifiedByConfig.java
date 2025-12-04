@@ -16,7 +16,7 @@ public class AutoSetCreatedAndModifiedByConfig implements AuditorAware<String> {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		if (auth == null || !auth.isAuthenticated()) {
+		if (auth == null || auth.getPrincipal().equals("anonymousUser")) {
 			return Optional.of("SELF_REGISTERED");
 		}
 
