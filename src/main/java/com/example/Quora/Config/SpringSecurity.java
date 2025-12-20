@@ -22,12 +22,13 @@ public class SpringSecurity {
 
 	@Autowired
 	private CustomAccessDeniedHandler accessDeniedHandler;
-
+	
 	@Bean
 	public SecurityFilterChain security(HttpSecurity http) throws Exception {
 
 		http.csrf(csrf -> csrf.disable()).exceptionHandling(ex -> ex.accessDeniedHandler(accessDeniedHandler))
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/user/signUp", "/user/login").permitAll()
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/user/signUp", "/user/login",  "/swagger-ui/**",
+				        "/v3/api-docs/**").permitAll()
 						.anyRequest().authenticated());
 
 		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
