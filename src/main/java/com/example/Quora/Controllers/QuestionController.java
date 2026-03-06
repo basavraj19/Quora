@@ -20,14 +20,19 @@ import com.example.Quora.Utils.CommonUtils;
 import com.example.Quora.Utils.JsonResponseEntity;
 import com.example.Quora.Utils.StringConstants;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/question")
+@Tag(name = "Question APIs", description = "APIs for managing questions")
 public class QuestionController {
 
 	@Autowired
 	private QuestionService questionService;
 
 	@PostMapping("/create")
+	@Operation(summary = "Create Question", description = "Creates a new question")
 	public JsonResponseEntity<Question> createNewQuestion(@RequestBody final QuestionDto question)
 			throws InvalidInputException {
 		final Question newQuestion = questionService.createNewQuestion(question);
@@ -45,6 +50,7 @@ public class QuestionController {
 	}
 
 	@GetMapping("/search/{qId}")
+	@Operation(summary = "Get Question", description = "Retrieves the question for the specified question ID")
 	public JsonResponseEntity<Question> getQuestionById(@PathVariable final int qId)
 			throws InvalidInputException, QuestionNotFoundException {
 		final Question question = questionService.getQuestionByQuestionId(qId);
@@ -62,6 +68,7 @@ public class QuestionController {
 	}
 
 	@PutMapping("/updateQuestion")
+	@Operation(summary = "Update Question", description = "Updates the details of a question for the specified question ID")
 	public JsonResponseEntity<Question> updateQuestion(@RequestBody final Question question)
 			throws InvalidInputException, QuestionNotFoundException {
 		final Question updatedQuestion = questionService.updateQuestion(question);
@@ -79,6 +86,7 @@ public class QuestionController {
 	}
 
 	@DeleteMapping("/delete/{qId}")
+	@Operation(summary = "Delete Question", description = "Deletes a question based on the provided question ID")
 	public JsonResponseEntity<Question> deleteQuestion(@PathVariable final int qId)
 			throws InvalidInputException, QuestionNotFoundException {
 		final Question deletedQuestion = questionService.deleteQuestionByQuestionId(qId);

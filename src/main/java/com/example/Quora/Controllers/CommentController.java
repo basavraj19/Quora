@@ -19,14 +19,19 @@ import com.example.Quora.Utils.CommonUtils;
 import com.example.Quora.Utils.JsonResponseEntity;
 import com.example.Quora.Utils.StringConstants;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/comment")
+@Tag(name = "Comment APIs", description = "Operation related to comments")
 public class CommentController {
 
 	@Autowired
 	private CommentService commentService;
 
 	@PostMapping("/create")
+	@Operation(summary = "Create Comment", description = "Creates a new comment for the specified answer")
 	public JsonResponseEntity<Comment> createNewComment(@RequestBody final CommentDto comment)
 			throws InvalidInputException {
 		final Comment newComment = commentService.createComment(comment);
@@ -45,6 +50,7 @@ public class CommentController {
 	}
 
 	@GetMapping("/fetch/{commentId}")
+	@Operation(summary = "Fetch Comment", description = "Retrieves comment details based on the provided comment ID")
 	public JsonResponseEntity<Comment> getComment(@PathVariable final int commentId)
 			throws InvalidInputException, CommentNotFoundException {
 		final Comment comment = commentService.getCommentByCommentId(commentId);
@@ -63,6 +69,7 @@ public class CommentController {
 	}
 
 	@DeleteMapping("/delete/{commentId}")
+	@Operation(summary = "Delete Comment", description = "Deletes a comment based on the provided comment ID")
 	public JsonResponseEntity<Comment> deleteComment(@PathVariable final int commentId)
 			throws InvalidInputException, CommentNotFoundException {
 		final Comment deletedComment = commentService.deleteComment(commentId);

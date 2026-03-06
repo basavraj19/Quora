@@ -19,16 +19,21 @@ import com.example.Quora.Utils.CommonUtils;
 import com.example.Quora.Utils.JsonResponseEntity;
 import com.example.Quora.Utils.StringConstants;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/answer")
+@Tag(name = "Answer APIs", description = "APIs for creating and retrieving answers")
 public class AnswerController {
 
 	@Autowired
 	private AnswerService answerService;
 
 	@PostMapping("/create")
+	@Operation(summary = "Create Answer", description = "Creates a new answer associated with the specified question")
 	public JsonResponseEntity<Answer> createAnswer(@RequestBody final AnswerDto ans) throws InvalidInputException {
-		
+
 		final Answer newAnswer = answerService.createNewAnswer(ans);
 
 		final JsonResponseEntity<Answer> response = new JsonResponseEntity<>();
@@ -45,6 +50,7 @@ public class AnswerController {
 	}
 
 	@GetMapping("/search/{ansId}")
+	@Operation(summary = "Get Answer", description = "Retrieves an answer based on the provided answer ID")
 	public JsonResponseEntity<Answer> getAnswerByAnswerId(@PathVariable final int ansId)
 			throws InvalidInputException, AnswerNotFoundException {
 		final Answer answer = answerService.getAnswerByAnswerId(ansId);
@@ -63,6 +69,7 @@ public class AnswerController {
 	}
 
 	@DeleteMapping("/delete/{ansId}")
+	@Operation(summary = "Delete Answer", description = "Deletes an answer based on the provided answer ID")
 	public JsonResponseEntity<Answer> deleteAnswerByAnswerId(@PathVariable final int ansId)
 			throws InvalidInputException, AnswerNotFoundException {
 		final Answer deletedAnswer = answerService.deleteAnswer(ansId);

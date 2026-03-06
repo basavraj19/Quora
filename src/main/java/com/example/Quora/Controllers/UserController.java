@@ -22,14 +22,19 @@ import com.example.Quora.Utils.CommonUtils;
 import com.example.Quora.Utils.JsonResponseEntity;
 import com.example.Quora.Utils.StringConstants;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/user")
+@Tag(name = "User APIs", description = "User management APIs")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
 
 	@PostMapping("/signUp")
+	@Operation(summary = "Create User", description = "Creates a new user in the system")
 	public JsonResponseEntity<UserDto> createNewUser(@RequestBody final User user) throws Exception {
 		final UserDto newUser = userService.createNewUser(user);
 
@@ -53,6 +58,7 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
+	@Operation(summary = "User Login", description = "Validates user credentials and generates a JWT token")
 	public ResponseEntity<JsonResponseEntity<String>> login(@RequestBody final User user) throws UserNotFoundException {
 		final String jwt = userService.login(user);
 
@@ -81,6 +87,7 @@ public class UserController {
 	}
 
 	@GetMapping("/search")
+	@Operation(summary = "Search User", description = "Retrieves user based on the provided username")
 	public JsonResponseEntity<UserDto> findUser(@RequestParam final String userName) throws UserNotFoundException {
 		final UserDto user = userService.getUserByUserName(userName);
 
@@ -97,6 +104,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/delete")
+	@Operation(summary = "Delete User", description = "Deletes a user based on the provided username")
 	public JsonResponseEntity<UserDto> deleteUser(@RequestParam final String userName) throws UserNotFoundException {
 		final UserDto user = userService.deleteUser(userName);
 
@@ -114,6 +122,7 @@ public class UserController {
 	}
 
 	@PatchMapping("/update")
+	@Operation(summary = "Update User Password", description = "Updates the password for the specified user")
 	public JsonResponseEntity<UserDto> updatePassword(@RequestBody User user) throws UserNotFoundException {
 		final UserDto updatedUser = userService.updatePassword(user.getUserName(), user.getPassword());
 

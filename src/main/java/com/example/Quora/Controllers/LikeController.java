@@ -17,14 +17,19 @@ import com.example.Quora.Utils.CommonUtils;
 import com.example.Quora.Utils.JsonResponseEntity;
 import com.example.Quora.Utils.StringConstants;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/like")
+@Tag(name = "Like APIs", description = "Operation related to likes")
 public class LikeController {
 
 	@Autowired
 	private LikeService likeService;
 
 	@PostMapping("/create")
+	@Operation(summary = "Create Like Entry", description = "Creates a like for the specified answer using the provided like details")
 	public JsonResponseEntity<Like> createLike(@RequestBody final LikeDto likeDto) throws InvalidInputException {
 		final Like like = likeService.newLike(likeDto);
 
@@ -42,6 +47,7 @@ public class LikeController {
 	}
 
 	@GetMapping("/getLikes/{answerId}")
+	@Operation(summary = "Get Like Count", description = "Retrieves the total number of likes for the specified answer ID")
 	public JsonResponseEntity<Integer> getLikeCount(@PathVariable final int answerId) throws InvalidInputException {
 		final int likes = likeService.getLikeCountByAnswerId(answerId);
 

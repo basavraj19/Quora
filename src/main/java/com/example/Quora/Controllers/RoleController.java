@@ -20,14 +20,19 @@ import com.example.Quora.Utils.CommonUtils;
 import com.example.Quora.Utils.JsonResponseEntity;
 import com.example.Quora.Utils.StringConstants;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/role")
+@Tag(name = "Role APIs", description = "APIs for managing roles")
 public class RoleController {
 
 	@Autowired
 	private RoleService roleService;
 
 	@PostMapping("/newRole")
+	@Operation(summary = "Create Role", description = "Creates a new role in the system")
 	public JsonResponseEntity<Role> createNewRole(@RequestBody final Role role) throws DuplicateEntryException {
 
 		final Role newRole = roleService.create(role);
@@ -45,6 +50,7 @@ public class RoleController {
 	}
 
 	@GetMapping("/{roleId}")
+	@Operation(summary = "Get Role", description = "Retrieves role details based on the provided role ID")
 	public JsonResponseEntity<Role> getRoleById(@PathVariable final int roleId) throws ResourceNotFoundException {
 		final Role role = roleService.getRoleById(roleId);
 
@@ -62,6 +68,7 @@ public class RoleController {
 	}
 
 	@GetMapping("fetchAllRoles")
+	@Operation(summary = "Get All Roles", description = "Retrieves a list of all roles available in the system")
 	public JsonResponseEntity<List<Role>> getAllRoles() throws ResourceNotFoundException {
 		final List<Role> role = roleService.getAllRoles();
 
@@ -79,6 +86,7 @@ public class RoleController {
 	}
 
 	@DeleteMapping("/delete/{roleId}")
+	@Operation(summary = "Delete Role", description = "Deletes a role based on the provided role ID")
 	public JsonResponseEntity<Role> deleteRole(@PathVariable final int roleId) throws ResourceNotFoundException {
 		final Role role = roleService.deleteRole(roleId);
 
