@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/answer")
-@Tag(name = "Answer APIs", description = "APIs for creating and retrieving answers")
+@Tag(name = "3. Answer APIs", description = "APIs for creating and retrieving answers")
 public class AnswerController {
 
 	@Autowired

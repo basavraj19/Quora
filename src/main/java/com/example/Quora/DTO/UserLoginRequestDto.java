@@ -1,5 +1,7 @@
 package com.example.Quora.DTO;
 
+import org.springframework.stereotype.Component;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,11 +11,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class CommentDto {
+@NoArgsConstructor
+@Component
+public class UserLoginRequestDto {
+	
+	private String userName;
 
-	private int ansId;
-
-	private String comment;
+	private String password;
 }

@@ -1,5 +1,7 @@
 package com.example.Quora.DTO;
 
+import com.example.Quora.Utils.RoleEnum;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,11 +11,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class CommentDto {
+@NoArgsConstructor
+public class RoleRequestDto {
 
-	private int ansId;
-
-	private String comment;
+	private RoleEnum role;
 }

@@ -1,10 +1,7 @@
 package com.example.Quora.DTO;
 
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
-import com.example.Quora.Entities.Question;
 import com.example.Quora.Entities.User;
 
 import lombok.AllArgsConstructor;
@@ -21,23 +18,22 @@ import lombok.Setter;
 @Component
 public class UserDto {
 
-	private int userId;
-
 	private String firstName;
 
 	private String lastName;
 
-	private String email;
+	private String userName;
 
-	private List<Question> questions;
+	private String password;
+	
+	private int roleId;
 
-	public UserDto convertToUserDto(final User user) {
-		UserDto dto = new UserDto();
-		dto.userId = user.getId();
-		dto.firstName = user.getFirstName();
-		dto.lastName = user.getLastName();
-		dto.email = user.getUserName();
-		dto.questions = user.getQuestions();
-		return dto;
+	public UserDto convertToUserDto(User existingUser) {
+		// TODO Auto-generated method stub
+		UserDto user = new UserDto();
+		user.setUserName(existingUser.getUserName());
+		user.setFirstName(existingUser.getFirstName());
+		user.setLastName(existingUser.getLastName());
+		return user;
 	}
 }

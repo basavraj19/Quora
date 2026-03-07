@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/like")
-@Tag(name = "Like APIs", description = "Operation related to likes")
+@Tag(name = "5. Like APIs", description = "Operation related to likes")
 public class LikeController {
 
 	@Autowired

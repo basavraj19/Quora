@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/question")
-@Tag(name = "Question APIs", description = "APIs for managing questions")
+@Tag(name = "2. Question APIs", description = "APIs for managing questions")
 public class QuestionController {
 
 	@Autowired
@@ -67,11 +67,11 @@ public class QuestionController {
 		return response;
 	}
 
-	@PutMapping("/updateQuestion")
+	@PutMapping("/updateQuestion/{qId}")
 	@Operation(summary = "Update Question", description = "Updates the details of a question for the specified question ID")
-	public JsonResponseEntity<Question> updateQuestion(@RequestBody final Question question)
-			throws InvalidInputException, QuestionNotFoundException {
-		final Question updatedQuestion = questionService.updateQuestion(question);
+	public JsonResponseEntity<Question> updateQuestion(@PathVariable final int qId,
+			@RequestBody final QuestionDto question) throws InvalidInputException, QuestionNotFoundException {
+		final Question updatedQuestion = questionService.updateQuestion(qId, question);
 
 		final JsonResponseEntity<Question> response = new JsonResponseEntity<>();
 

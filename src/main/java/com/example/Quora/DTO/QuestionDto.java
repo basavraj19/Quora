@@ -15,13 +15,4 @@ public class QuestionDto {
 
 	private String question;
 
-	private String createdBy;
-
-	private String modifiedBy;
-
-	private String userName;
-
-	private String createdAt;
-
-	private String modifiedAt;
 }

@@ -14,6 +14,4 @@ import lombok.Setter;
 public class LikeDto {
 
 	private int ansId;
-
-	private String createdBy;
 }

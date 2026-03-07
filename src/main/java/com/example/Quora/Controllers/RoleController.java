@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Quora.DTO.RoleRequestDto;
 import com.example.Quora.Entities.Role;
 import com.example.Quora.Exceptions.DuplicateEntryException;
 import com.example.Quora.Exceptions.ResourceNotFoundException;
@@ -25,7 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/role")
-@Tag(name = "Role APIs", description = "APIs for managing roles")
+@Tag(name = "6. Role APIs", description = "APIs for managing roles")
 public class RoleController {
 
 	@Autowired
@@ -33,7 +34,8 @@ public class RoleController {
 
 	@PostMapping("/newRole")
 	@Operation(summary = "Create Role", description = "Creates a new role in the system")
-	public JsonResponseEntity<Role> createNewRole(@RequestBody final Role role) throws DuplicateEntryException {
+	public JsonResponseEntity<Role> createNewRole(@RequestBody final RoleRequestDto role)
+			throws DuplicateEntryException {
 
 		final Role newRole = roleService.create(role);
 

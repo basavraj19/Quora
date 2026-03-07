@@ -1,5 +1,6 @@
 package com.example.Quora.Services;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.Quora.DTO.UserDto;
+import com.example.Quora.DTO.UserLoginRequestDto;
 import com.example.Quora.Entities.Role;
 import com.example.Quora.Entities.User;
 import com.example.Quora.Exceptions.UnauthorizedException;
@@ -28,6 +30,9 @@ public class UserService {
 	private UserRepository userRepository;
 
 	@Autowired
+	private RoleService roleService;
+
+	@Autowired
 	private UserDto userDto;
 
 	@Autowired
@@ -36,7 +41,7 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public UserDto createNewUser(final User user) throws Exception {
+	public String createNewUser(final UserDto user) throws Exception {
 
 		final User existingUser = userRepository.findByUserName(user.getUserName()).orElse(null);
 
@@ -45,17 +50,25 @@ public class UserService {
 		}
 
 		if (CommonUtils.isValidObject(user)) {
+			final Role role = roleService.getRoleById(user.getRoleId());
+
+			final Set<Role> set = new HashSet<>();
+			set.add(role);
+
 			final String encodedPassword = encryptPassword(user.getPassword());
-			user.setPassword(encodedPassword);
-			final User newUser = userRepository.save(user);
-			final UserDto dto = userDto.convertToUserDto(newUser);
-			return dto;
+
+			User newUser = User.builder().firstName(user.getFirstName()).lastName(user.getLastName())
+					.userName(user.getUserName()).password(encodedPassword).roles(set).build();
+
+			final User u = userRepository.save(newUser);
+
+			return u.getUserName();
 		}
 
 		return null;
 	}
 
-	public String login(final User user) throws UserNotFoundException {
+	public String login(final UserLoginRequestDto user) throws UserNotFoundException {
 		final User existingUser = userRepository.findByUserName(user.getUserName())
 				.orElseThrow(() -> new UserNotFoundException("user " + user.getUserName() + " not found."));
 

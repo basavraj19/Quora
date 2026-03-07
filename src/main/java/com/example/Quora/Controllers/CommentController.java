@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/comment")
-@Tag(name = "Comment APIs", description = "Operation related to comments")
+@Tag(name = "4. Comment APIs", description = "Operation related to comments")
 public class CommentController {
 
 	@Autowired
