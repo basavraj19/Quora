@@ -11,7 +11,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LikeDto {
+public class LikeDislikeRequestDto {
 
 	private int ansId;
 }

@@ -38,8 +38,4 @@ public class Answer extends BaseModel {
 	@OneToMany(mappedBy = "answer", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<Comment> comments;
-
-	@OneToMany(mappedBy = "answer", cascade = CascadeType.ALL)
-	@JsonManagedReference
-	private List<Dislike> dislike;
 }

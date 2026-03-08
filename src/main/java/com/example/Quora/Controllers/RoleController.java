@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/role")
-@Tag(name = "6. Role APIs", description = "APIs for managing roles")
+@Tag(name = "7. Role APIs", description = "APIs for managing roles")
 public class RoleController {
 
 	@Autowired

@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Quora.DTO.LikeDislikeRequestDto;
-import com.example.Quora.Entities.Like;
+import com.example.Quora.Entities.Dislike;
 import com.example.Quora.Exceptions.InvalidInputException;
-import com.example.Quora.Services.LikeService;
+import com.example.Quora.Services.DislikeService;
 import com.example.Quora.Utils.CommonUtils;
 import com.example.Quora.Utils.JsonResponseEntity;
 import com.example.Quora.Utils.StringConstants;
@@ -21,25 +21,25 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/like")
-@Tag(name = "5. Like APIs", description = "Operation related to likes")
-public class LikeController {
+@RequestMapping("/dislike")
+@Tag(name = "6. Dislike APIs", description = "Operation related to dislikes")
+public class DislikeController {
 
 	@Autowired
-	private LikeService likeService;
+	private DislikeService dislikeService;
 
 	@PostMapping("/create")
-	@Operation(summary = "Create Like Entry", description = "Creates a like for the specified answer.")
-	public JsonResponseEntity<Like> createLike(@RequestBody final LikeDislikeRequestDto likeDto)
+	@Operation(summary = "Create DisLike Entry", description = "Creates a dislike for the specified answer.")
+	public JsonResponseEntity<Dislike> createDisLike(@RequestBody final LikeDislikeRequestDto dislikeDto)
 			throws InvalidInputException {
-		final Like like = likeService.newLike(likeDto);
+		final Dislike dislike = dislikeService.newDisLike(dislikeDto);
 
-		final JsonResponseEntity<Like> response = new JsonResponseEntity<>();
+		final JsonResponseEntity<Dislike> response = new JsonResponseEntity<>();
 
-		if (CommonUtils.isValidObject(like)) {
+		if (CommonUtils.isValidObject(dislike)) {
 			response.setStatus(StringConstants.success);
-			response.setMessage(StringConstants.LikeEntryCreatedMessage);
-			response.setResult(like);
+			response.setMessage(StringConstants.DisLikeEntryCreatedMessage);
+			response.setResult(dislike);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.CREATED);
 		}
@@ -47,16 +47,16 @@ public class LikeController {
 		return response;
 	}
 
-	@GetMapping("/getLikes/{answerId}")
-	@Operation(summary = "Get Like Count", description = "Retrieves the total number of likes for the specified answer ID")
-	public JsonResponseEntity<Integer> getLikeCount(@PathVariable final int answerId) throws InvalidInputException {
-		final int likes = likeService.getLikeCountByAnswerId(answerId);
+	@GetMapping("/getDislikes/{answerId}")
+	@Operation(summary = "Get DisLike Count", description = "Retrieves the total number of dislikes for the specified answer ID")
+	public JsonResponseEntity<Integer> getDisLikeCount(@PathVariable final int answerId) throws InvalidInputException {
+		final int dislikes = dislikeService.getDisLikeCountByAnswerId(answerId);
 
 		final JsonResponseEntity<Integer> response = new JsonResponseEntity<>();
 
 		response.setStatus(StringConstants.success);
-		response.setMessage(StringConstants.LikedetailsFetchedMessage);
-		response.setResult(likes);
+		response.setMessage(StringConstants.DisLikedetailsFetchedMessage);
+		response.setResult(dislikes);
 		response.setException(null);
 		response.setStatusCode(HttpStatus.OK);
 

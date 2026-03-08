@@ -3,13 +3,12 @@ package com.example.Quora.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.Quora.DTO.LikeDto;
+import com.example.Quora.DTO.LikeDislikeRequestDto;
 import com.example.Quora.Entities.Answer;
 import com.example.Quora.Entities.Like;
 import com.example.Quora.Exceptions.InvalidInputException;
 import com.example.Quora.Repositories.LikeRepository;
 import com.example.Quora.Utils.CommonUtils;
-
 
 @Service
 public class LikeService {
@@ -20,7 +19,7 @@ public class LikeService {
 	@Autowired
 	private AnswerService answerService;
 
-	public Like newLike(final LikeDto likeDto) throws InvalidInputException {
+	public Like newLike(final LikeDislikeRequestDto likeDto) throws InvalidInputException {
 		if (!CommonUtils.isValidObject(likeDto)) {
 			throw new InvalidInputException("Invalid Request");
 		}
