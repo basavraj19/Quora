@@ -27,17 +27,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		// if (request.getServletPath().equals("/user/signUp") ||
-		// request.getServletPath().equals("/user/login")) {
-		// filterChain.doFilter(request, response);
-		// return;
-		// }
-
 		Cookie[] cookies = request.getCookies();
 
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				System.out.println(cookie.getName());
+
 				if ("jwtToken".equals(cookie.getName())) {
 					String token = cookie.getValue();
 
