@@ -1,5 +1,7 @@
 package com.example.Quora.Services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,20 @@ public class QuestionService {
 		Question newQuestion = questionRepository.save(question);
 
 		return newQuestion;
+	}
+
+	public List<Question> search(final String question) throws QuestionNotFoundException, InvalidInputException {
+		if (question == null) {
+			throw new InvalidInputException("Invalid Question content.");
+		}
+
+		final List<Question> questions = questionRepository.getQuestionByContent(question);
+
+		if (questions == null) {
+			throw new QuestionNotFoundException("No Relevant data found.");
+		}
+
+		return questions;
 	}
 
 	public Question getQuestionByQuestionId(final int qId) throws QuestionNotFoundException, InvalidInputException {

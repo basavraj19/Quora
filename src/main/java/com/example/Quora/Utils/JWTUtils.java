@@ -36,6 +36,10 @@ public class JWTUtils {
 	}
 
 	public Claims extractAllClaims(final String token) {
+		if (token == null || token.trim().isEmpty()) {
+			return null;
+		}
+
 		return Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token).getBody();
 	}
 

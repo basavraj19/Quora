@@ -1,14 +1,11 @@
 package com.example.Quora.Services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.Quora.DTO.RoleRequestDto;
 import com.example.Quora.Entities.Role;
-import com.example.Quora.Exceptions.DuplicateEntryException;
 import com.example.Quora.Exceptions.InvalidInputException;
 import com.example.Quora.Exceptions.ResourceNotFoundException;
 import com.example.Quora.Repositories.RoleRepository;
@@ -19,17 +16,17 @@ public class RoleService {
 	@Autowired
 	private RoleRepository roleRepository;
 
-	public Role create(final RoleRequestDto role) throws DuplicateEntryException {
-		Optional<Role> existingRole = roleRepository.findByRole(role.getRole());
-
-		if (existingRole.isPresent()) {
-			throw new DuplicateEntryException("Role Already exists.");
-		}
-
-		Role newRole = Role.builder().role(role.getRole()).build();
-
-		return roleRepository.save(newRole);
-	}
+	/*
+	 * public Role create(final RoleRequestDto role) throws DuplicateEntryException
+	 * { Optional<Role> existingRole = roleRepository.findByRole(role.getRole());
+	 * 
+	 * if (existingRole.isPresent()) { throw new
+	 * DuplicateEntryException("Role Already exists."); }
+	 * 
+	 * Role newRole = Role.builder().role(role.getRole()).build();
+	 * 
+	 * return roleRepository.save(newRole); }
+	 */
 
 	public Role getRoleById(final int roleId) throws ResourceNotFoundException, InvalidInputException {
 
@@ -54,10 +51,10 @@ public class RoleService {
 		return roles;
 	}
 
-	public Role deleteRole(final int roleId) throws ResourceNotFoundException, InvalidInputException {
-		final Role role = getRoleById(roleId);
-
-		roleRepository.deleteById(roleId);
-		return role;
-	}
+	/*
+	 * public Role deleteRole(final int roleId) throws ResourceNotFoundException,
+	 * InvalidInputException { final Role role = getRoleById(roleId);
+	 * 
+	 * roleRepository.deleteById(roleId); return role; }
+	 */
 }

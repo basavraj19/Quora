@@ -12,4 +12,8 @@ public interface LikeRepository extends JpaRepository<Like, Integer> {
 
 	@Query("SELECT count(1) FROM Like WHERE answerId = :ansId")
 	int findLikeCountByAnswerId(@Param("ansId") int ansId);
+
+	@Query(nativeQuery = true, value = "SELECT * FROM quora_like_dtl where answer_id =:ansId"
+			+ " and created_by =:loggnedInUser limit 1")
+	Like isUserLikedAlready(@Param("ansId") int ansId, @Param("loggnedInUser") String loggnedInUser);
 }

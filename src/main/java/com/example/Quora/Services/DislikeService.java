@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.Quora.DTO.LikeDislikeRequestDto;
 import com.example.Quora.Entities.Answer;
 import com.example.Quora.Entities.Dislike;
+import com.example.Quora.Exceptions.DuplicateEntryException;
 import com.example.Quora.Exceptions.InvalidInputException;
 import com.example.Quora.Repositories.DislikeRepository;
 import com.example.Quora.Utils.CommonUtils;
@@ -19,7 +20,12 @@ public class DislikeService {
 	@Autowired
 	private AnswerService answerService;
 
-	public Dislike newDisLike(final LikeDislikeRequestDto dislikeDto) throws InvalidInputException {
+	@Autowired
+	private UserService userService;
+
+	public Dislike newDisLike(final LikeDislikeRequestDto dislikeDto)
+			throws InvalidInputException, DuplicateEntryException {
+
 		if (!CommonUtils.isValidObject(dislikeDto)) {
 			throw new InvalidInputException("Invalid Request");
 		}
@@ -28,9 +34,18 @@ public class DislikeService {
 		Dislike newEntry = null;
 
 		if (answer != null) {
-			final Dislike dislike = Dislike.builder().answerId(dislikeDto.getAnsId()).build();
+			final String loggedInUser = userService.getLoggedInUserName();
+			final Dislike existingDislikeEntry = dislikeRepository.isUserDisliked(dislikeDto.getAnsId(), loggedInUser);
 
-			newEntry = dislikeRepository.save(dislike);
+			if (existingDislikeEntry == null) {
+				final Dislike dislike = Dislike.builder().answerId(dislikeDto.getAnsId()).build();
+
+				newEntry = dislikeRepository.save(dislike);
+
+			} else {
+				throw new DuplicateEntryException("User already disliked this answer.");
+			}
+
 		}
 
 		return newEntry;

@@ -1,5 +1,7 @@
 package com.example.Quora.Controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Quora.DTO.QuestionDto;
@@ -45,6 +48,23 @@ public class QuestionController {
 			response.setResult(newQuestion);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.CREATED);
+		}
+		return response;
+	}
+
+	@GetMapping("/search")
+	@Operation(summary = "Serach Questions", description = "Search Questions.")
+	public JsonResponseEntity<List<Question>> serachQuestion(@RequestParam("question") String question)
+			throws InvalidInputException, QuestionNotFoundException {
+		final List<Question> result = questionService.search(question);
+
+		JsonResponseEntity<List<Question>> response = new JsonResponseEntity<>();
+		if (CommonUtils.isValidObject(result)) {
+			response.setStatus(StringConstants.success);
+			response.setMessage(StringConstants.questionFetchedMessage);
+			response.setResult(result);
+			response.setException(null);
+			response.setStatusCode(HttpStatus.OK);
 		}
 		return response;
 	}

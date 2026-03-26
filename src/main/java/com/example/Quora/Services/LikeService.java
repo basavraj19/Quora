@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.Quora.DTO.LikeDislikeRequestDto;
 import com.example.Quora.Entities.Answer;
 import com.example.Quora.Entities.Like;
+import com.example.Quora.Exceptions.DuplicateEntryException;
 import com.example.Quora.Exceptions.InvalidInputException;
 import com.example.Quora.Repositories.LikeRepository;
 import com.example.Quora.Utils.CommonUtils;
@@ -19,7 +20,11 @@ public class LikeService {
 	@Autowired
 	private AnswerService answerService;
 
-	public Like newLike(final LikeDislikeRequestDto likeDto) throws InvalidInputException {
+	@Autowired
+	private UserService userService;
+
+	public Like newLike(final LikeDislikeRequestDto likeDto) throws InvalidInputException, DuplicateEntryException {
+
 		if (!CommonUtils.isValidObject(likeDto)) {
 			throw new InvalidInputException("Invalid Request");
 		}
@@ -28,9 +33,17 @@ public class LikeService {
 		Like newLike = null;
 
 		if (answer != null) {
-			final Like like = Like.builder().answerId(likeDto.getAnsId()).build();
+			final String loggedInUser = userService.getLoggedInUserName();
 
-			newLike = likeRepository.save(like);
+			final Like existingLikeEntry = likeRepository.isUserLikedAlready(likeDto.getAnsId(), loggedInUser);
+
+			if (existingLikeEntry == null) {
+				final Like like = Like.builder().answerId(likeDto.getAnsId()).build();
+
+				newLike = likeRepository.save(like);
+			} else {
+				throw new DuplicateEntryException("User already liked this answer.");
+			}
 		}
 
 		return newLike;

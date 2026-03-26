@@ -35,13 +35,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				if ("jwtToken".equals(cookie.getName())) {
 					String token = cookie.getValue();
 
-					if (!jwtUtils.isTokenExpired(token)) {
-						UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-								jwtUtils.extractUserName(token), null, jwtUtils.extractRoles(token));
-
-						SecurityContextHolder.getContext().setAuthentication(auth);
+					if (token == null || token.trim().isEmpty()) {
+						break;
 					}
+
+					try {
+						if (!jwtUtils.isTokenExpired(token)) {
+							UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+									jwtUtils.extractUserName(token), null, jwtUtils.extractRoles(token));
+
+							SecurityContextHolder.getContext().setAuthentication(auth);
+						}
+					} catch (Exception e) {
+						System.out.println("Invalid JWT: " + e.getMessage());
+					}
+
 					break;
+
 				}
 			}
 		}

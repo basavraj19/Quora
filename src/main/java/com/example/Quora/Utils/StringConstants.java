@@ -11,6 +11,8 @@ public class StringConstants {
 	public static String failedUserCreatedMessage = "Failed to create new User";
 
 	public static String userFetchedMessage = "User Details fetched Successfully";
+	
+	public static String userLoggedMessage = "User Logged In Successfully";
 
 	public static String failedRequestProcessingMessage = "Something went wrong while processing your request";
 

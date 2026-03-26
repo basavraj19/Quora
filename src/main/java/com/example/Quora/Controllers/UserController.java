@@ -68,17 +68,21 @@ public class UserController {
 
 		final JsonResponseEntity<String> response = new JsonResponseEntity<>();
 
-		final long expiryTime = 5 * 60;
-
-		final ResponseCookie jwtCookie = ResponseCookie.from("jwtToken", jwt).httpOnly(true).secure(false).path("/")
-				.sameSite("Lax").maxAge(expiryTime).build();
-
 		if (CommonUtils.isValidString(jwt)) {
+
+			final long expiryTime = 5 * 60;
+
+			final ResponseCookie jwtCookie = ResponseCookie.from("jwtToken", jwt).httpOnly(true).secure(false).path("/")
+					.sameSite("Lax").maxAge(expiryTime).build();
+
 			response.setStatus(StringConstants.success);
-			response.setMessage(StringConstants.userFetchedMessage);
+			response.setMessage(StringConstants.userLoggedMessage);
 			response.setResult(null);
 			response.setException(null);
 			response.setStatusCode(HttpStatus.ACCEPTED);
+
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(response);
+
 		} else {
 			response.setStatus(StringConstants.failed);
 			response.setMessage(StringConstants.inValidPasswordMessage);
@@ -87,7 +91,7 @@ public class UserController {
 			response.setStatusCode(HttpStatus.BAD_REQUEST);
 		}
 
-		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(response);
+		return ResponseEntity.badRequest().body(response);
 	}
 
 	@GetMapping("/search")
