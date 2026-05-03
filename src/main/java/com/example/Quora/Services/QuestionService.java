@@ -1,5 +1,6 @@
 package com.example.Quora.Services;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.example.Quora.Exceptions.UnauthorizedException;
 import com.example.Quora.Exceptions.UserNotFoundException;
 import com.example.Quora.Repositories.QuestionRepository;
 import com.example.Quora.Repositories.UserRepository;
+import com.example.Quora.Utils.CommonUtils;
 
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
@@ -47,14 +49,23 @@ public class QuestionService {
 	}
 
 	public List<Question> search(final String question) throws QuestionNotFoundException, InvalidInputException {
-		if (question == null) {
-			throw new InvalidInputException("Invalid Question content.");
+		if (question == null || question.trim().isEmpty()) {
+			throw new InvalidInputException("Search query cannot be empty.");
+		}
+
+		String[] words = question.toLowerCase().split("\\s+");
+
+		long validWordCount = Arrays.stream(words)
+				.filter(word -> !CommonUtils.STOP_WORDS.contains(word) && word.length() >= 3).count();
+
+		if (validWordCount == 0) {
+			throw new InvalidInputException("Please enter meaningful search keywords.");
 		}
 
 		final List<Question> questions = questionRepository.getQuestionByContent(question);
 
-		if (questions == null) {
-			throw new QuestionNotFoundException("No Relevant data found.");
+		if (questions.isEmpty()) {
+			throw new QuestionNotFoundException("No relevant data found.");
 		}
 
 		return questions;

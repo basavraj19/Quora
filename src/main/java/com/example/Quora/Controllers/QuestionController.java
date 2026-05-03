@@ -59,13 +59,13 @@ public class QuestionController {
 		final List<Question> result = questionService.search(question);
 
 		JsonResponseEntity<List<Question>> response = new JsonResponseEntity<>();
-		if (CommonUtils.isValidObject(result)) {
-			response.setStatus(StringConstants.success);
-			response.setMessage(StringConstants.questionFetchedMessage);
-			response.setResult(result);
-			response.setException(null);
-			response.setStatusCode(HttpStatus.OK);
-		}
+
+		response.setStatus(StringConstants.success);
+		response.setMessage(StringConstants.questionFetchedMessage);
+		response.setResult(result);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.OK);
+
 		return response;
 	}
 
