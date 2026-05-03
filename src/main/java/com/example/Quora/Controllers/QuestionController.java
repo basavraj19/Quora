@@ -53,7 +53,7 @@ public class QuestionController {
 	}
 
 	@GetMapping("/search")
-	@Operation(summary = "Serach Questions", description = "Search Questions.")
+	@Operation(summary = "Search Question", description = "Performs full-text search on questions and returns results sorted by relevance")
 	public JsonResponseEntity<List<Question>> serachQuestion(@RequestParam("question") String question)
 			throws InvalidInputException, QuestionNotFoundException {
 		final List<Question> result = questionService.search(question);
