@@ -5,6 +5,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Docker ###
+SCHEMA.txt
+.dockerignore
+
 ### STS ###
 .apt_generated
 .classpath
