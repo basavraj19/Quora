@@ -20,7 +20,7 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JWTUtils {
 
-	@Value("${secertKey}")
+	@Value("${secretKey}")
 	private String secretKey;
 
 	public Key getKey() {
